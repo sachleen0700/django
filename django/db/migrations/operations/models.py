@@ -11,7 +11,7 @@ from .fields import AddField, AlterField, FieldOperation, RemoveField, RenameFie
 def _check_for_duplicates(arg_name, objs, key_word):
     used_vals = set()
     for val in objs:
-        if val in key_words:
+        if val in key_word:
             continue
         if val in used_vals:
             raise ValueError(
