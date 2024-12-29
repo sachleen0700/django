@@ -8,9 +8,11 @@ from django.utils.functional import cached_property
 from .fields import AddField, AlterField, FieldOperation, RemoveField, RenameField
 
 
-def _check_for_duplicates(arg_name, objs):
+def _check_for_duplicates(arg_name, objs, key_word):
     used_vals = set()
     for val in objs:
+        if val in key_word:
+            continue
         if val in used_vals:
             raise ValueError(
                 "Found duplicate value %s in CreateModel %s argument." % (val, arg_name)
