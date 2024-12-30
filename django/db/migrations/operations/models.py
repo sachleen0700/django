@@ -94,7 +94,7 @@ class CreateModel(ModelOperation):
         )
 
     def database_forwards(self, app_label, schema_editor, from_state, to_state):
-        model = to_state.apps.get_model(app_label, self.name)
+        model = to_state.apps.get_model(app_label, self.name, schema_editor.name)
         if self.allow_migrate_model(schema_editor.connection.alias, model):
             schema_editor.create_model(model)
             # While the `index_together` option has been deprecated some
