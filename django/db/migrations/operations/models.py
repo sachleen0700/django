@@ -8,9 +8,11 @@ from django.utils.functional import cached_property
 from .fields import AddField, AlterField, FieldOperation, RemoveField, RenameField
 
 
-def _check_for_duplicates(arg_name, objs):
+def _check_for_duplicates(arg_name, objs, key_word):
     used_vals = set()
     for val in objs:
+        if val in key_word:
+            continue
         if val in used_vals:
             raise ValueError(
                 "Found duplicate value %s in CreateModel %s argument." % (val, arg_name)
@@ -92,7 +94,7 @@ class CreateModel(ModelOperation):
         )
 
     def database_forwards(self, app_label, schema_editor, from_state, to_state):
-        model = to_state.apps.get_model(app_label, self.name)
+        model = to_state.apps.get_model(app_label, self.name, schema_editor.name)
         if self.allow_migrate_model(schema_editor.connection.alias, model):
             schema_editor.create_model(model)
             # While the `index_together` option has been deprecated some
